@@ -13,8 +13,8 @@ public class Order {
     public void addProduct(Product product){
         products.add(product);
     }
-    public void removeProduct(Product product){
-        products.remove(product);
+    public void removeProduct(int index){
+        products.remove(index);
     }
 
     //Money
@@ -30,11 +30,16 @@ public class Order {
 
     //toString
     public void showOrder(){
-        System.out.println("----  ORDER  ----");
-        for(Product product : products){
-            System.out.println(product);
+        int index = 0;
+        if(products.isEmpty()){
+            System.out.println("----  EMPTY ORDER  ----");
+        }else{
+            System.out.println("----  ORDER  ----");
+            for(Product product : products){
+                System.out.println(index + ". " + product);
+                index++;
+            }
+            System.out.println("\nTotal: $" + billTotal());
         }
-        System.out.println("\nTotal: $" + billTotal());
-        System.out.println("\nPress [ENTER] to continue");
     }
 }

@@ -9,13 +9,23 @@ public class Main {
         }
     }
 
+    public static boolean isNumeric(String text){
+        try{
+            Integer.parseInt(text);
+            return true;
+        }
+        catch(NumberFormatException e){
+            return false;
+        }
+    }
+
 
     //MENUS
     public static void showMainMenu(){
         System.out.println("-----  RESTAURANT APP  ----");
-        System.out.println("1.- View Menu");
-        System.out.println("2.- Add to order");
-        System.out.println("3.- View current Order");
+        System.out.println("1.- Menu Options");
+        System.out.println("2.- Order Options");
+        System.out.println("3.- Remove a product from order");
         System.out.println("0.- Exit");
     }
 
@@ -24,78 +34,91 @@ public class Main {
     public static void main(String[] args){
         Scanner sc = new Scanner(System.in);
 
+        Menu myMenu = new Menu();
         Order myOrder = new Order();
         String myString;
         float myFloat;
 
-        int optMenu;
+        String optMenu;
 
         Product p1 = new Product("Taco", 15);
         Product p2 = new Product("Fish", 150);
         Product p3 = new Product("Lemonade", 50);
 
         do{
-            int option;
+            String optionC;
             clearConsole();
             showMainMenu();
             System.out.println("[Option] -> ");
-            optMenu = sc.nextInt();
+            optMenu = sc.nextLine();
 
-            //VIEW MENU
-            if(optMenu == 1){
+            //VIEW MENU AND ADD MENU
+            if(optMenu.equals("1")){
                 do{
                     clearConsole();
-                    System.out.println("----  MENU  ----");
-                    System.out.println("1. " + p1);
-                    System.out.println("2. " + p2);
-                    System.out.println("3. " + p3);
-                    System.out.println("0. Back");
-                    option = sc.nextInt();
-                }while(option != 0);
+                    myMenu.showMenu();
+                    System.out.println("\nA) Add Product");
+                    System.out.println("E) Exit");
+                    optionC = sc.nextLine();
+
+                    if(optionC.equals("A")){
+                        //PRODUCT INFORMATION
+                        System.out.println("\nProduct Name: ");
+                        myString = sc.nextLine();
+                        System.out.println("Product Prize: ");
+                        myFloat = sc.nextFloat();
+
+                        //ADDING PRODUCT TO MENU
+                        Product product = new Product(myString, myFloat);
+                        myMenu.addProductToMenu(product);
+                    }
+                }while(!optionC.equals("E"));
             }
 
             //ADD TO ORDER
-            if(optMenu == 2){
+            if(optMenu.equals("2")){
                 clearConsole();
 
-                System.out.println("\n\n----  ADD TO ORDER  ----");
+                System.out.println("\n\n----  ADD TO ORDER  ----\n");
                 do{
                     clearConsole();
-                    System.out.println("----  MENU  ----");
-                    System.out.println("1. " + p1);
-                    System.out.println("2. " + p2);
-                    System.out.println("3. " + p3);
-                    System.out.println("4. View Order");
-                    System.out.println("0. Back");
-                    System.out.println("[Option] -> ");
-                    option = sc.nextInt();
+                    myMenu.showMenu();
+                    System.out.println("\nAdd to order? Select an index or choose one of the below options");
+                    System.out.println("V) View Order");
+                    System.out.println("E) Exit");
+                    System.out.println("[OPTION] -> ");
+                    optionC = sc.nextLine();
 
-                    if(option == 1){
-                        myOrder.addProduct(p1);
+                    int index;
+
+                    //VERIFY IF ITS ONE OF THE MENU PRODUCTS
+                    if(isNumeric(optionC)){
+                        index = Integer.parseInt(optionC);
+                        myOrder.addProduct(myMenu.getProduct(index));
                     }
-                    if(option == 2){
-                        myOrder.addProduct(p2);
-                    }
-                    if(option == 3){
-                        myOrder.addProduct(p3);
-                    }
-                    if(option == 4){
+
+                    //VIEW CURRENT ORDER
+                    if(optionC.equals("V")){
                         clearConsole();
                         myOrder.showOrder();
-                        sc.nextLine();
+                        System.out.println("\nPress [ENTER] to continue");
                         sc.nextLine();
                     }
-                }while(option != 0);
+                }while(!optionC.equals("E"));
             }
 
-            //CURRENT ORDER
-            if(optMenu == 3){
+            //REMOVE FROM ORDER
+            if(optMenu.equals("3")){
                 clearConsole();
+                int index;
                 myOrder.showOrder();
-                sc.nextLine();
-                sc.nextLine();
+                System.out.println("[REMOVE] -> ");
+                optionC = sc.nextLine();
+
+                index = Integer.parseInt(optionC);
+                myOrder.removeProduct(index);
             }
 
-        }while(optMenu != 0);
+        }while(!optMenu.equals("0"));
     }
 }
