@@ -8,6 +8,10 @@ public class Menu {
         menu = new ArrayList<>();
     }
 
+    public int getSize(){
+        return menu.size();
+    }
+
     //ADD TO MENU
     public void addProductToMenu(Product product){
         menu.add(product);

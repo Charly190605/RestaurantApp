@@ -3,6 +3,16 @@ import java.util.ArrayList;
 public class Order {
     private ArrayList<Product> products;
 
+    private boolean isValidPos(int index){
+        if(index >= 0 && index < products.size()) {
+            return true;
+        }
+        return false;
+    }
+
+    public int getSize(){
+        return products.size();
+    }
 
     //Constructor
     public Order(){
@@ -11,10 +21,29 @@ public class Order {
 
     //Add and remove
     public void addProduct(Product product){
-        products.add(product);
+        boolean exists = false;
+        for(Product product1 : products){
+            if(product.getName().equals(product1.getName())){
+                product1.setStock(product1.getStock() + 1);
+                exists = true;
+            }
+        }
+        if(!exists){
+            products.add(product);
+            product.setStock(product.getStock() + 1);
+        }
     }
+
     public void removeProduct(int index){
-        products.remove(index);
+        if(isValidPos(index)){
+            if(products.get(index).getStock() > 1){
+                products.get(index).setStock(products.get(index).getStock() - 1);
+            }else{
+                products.remove(index);
+            }
+        }else{
+            System.out.println("Selecciona un index valido");
+        }
     }
 
     //Money
@@ -22,24 +51,25 @@ public class Order {
         float total = 0;
 
         for(Product product : products) {
-            total += product.getPrice();
+            total += product.getPrice() * product.getStock();
         }
 
         return total;
     }
 
     //toString
-    public void showOrder(){
-        int index = 0;
+    @Override
+    public String toString(){
+        String result = "";
         if(products.isEmpty()){
-            System.out.println("----  EMPTY ORDER  ----");
-        }else{
-            System.out.println("----  ORDER  ----");
-            for(Product product : products){
-                System.out.println(index + ". " + product);
-                index++;
-            }
-            System.out.println("\nTotal: $" + billTotal());
+            return "----  EMPTY ORDER  ----";
         }
+
+        result += "----  ORDER  ----\n";
+        for(Product product : products){
+            result += product.getStock() + "x  " + product.getName() + " $" + product.getPrice()*product.getStock() + "\n";
+        }
+        result += "\n Total: $" + billTotal();
+        return result;
     }
 }
