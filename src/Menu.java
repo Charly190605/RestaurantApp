@@ -13,8 +13,16 @@ public class Menu {
     }
 
     //ADD TO MENU
-    public void addProductToMenu(Product product){
-        menu.add(product);
+    public void addProductToMenu(Product product) {
+        boolean exists = false;
+        for(Product product1 : menu) {
+            if (product1.getName().equals(product.getName())) {
+                exists = true;
+            }
+        }
+        if(!exists){
+            menu.add(product);
+        }
     }
 
     //REMOVE FROM MENU

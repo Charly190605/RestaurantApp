@@ -53,7 +53,7 @@ public class Main {
 
             showMainMenu();
 
-            System.out.println("[Option] -> ");
+            System.out.print("[Option] -> ");
             optMenu = sc.nextLine();
 
             //VIEW MENU AND ADD MENU
@@ -105,7 +105,7 @@ public class Main {
                         String optAdd;
                         int index;
                         myMenu.showMenu();
-                        System.out.print("[INDEX TO ADD] -> ");
+                        System.out.print("\n[INDEX TO ADD] -> ");
                         optAdd = sc.nextLine();
                         if (isNumeric(optAdd)) {
                             index = Integer.parseInt(optAdd);
